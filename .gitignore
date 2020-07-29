@@ -1,0 +1,5 @@
+.vscode/
+*__pycache__/
+.gtgconfig
+dist/
+adddoxy.egg-info/
