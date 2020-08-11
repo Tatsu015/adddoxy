@@ -13,9 +13,9 @@ def add_doxy_comment(filepath):
 
     for cobj in __generate_comment_objs(filepath, header_code):
         if hf.has_doxy_comment(cobj, header_code):
-            old_doxy_comment = hf.extract_doxy_comment(cobj, header_code)
+            old_doxy_comment_obj = hf.extract_doxy_comment_obj(cobj, header_code)
 
-            if __need_to_change(cobj, old_doxy_comment):
+            if __need_to_change(cobj, old_doxy_comment_obj):
                 header_code = __insert_comment(cobj, header_code)
             else:
                 continue
@@ -28,25 +28,25 @@ def add_doxy_comment(filepath):
 def __generate_comment_objs(filepath, header_code):
     comment_objs = []
 
-    comment_objs.append(__generate_file_doxy_comment(filepath))
+    comment_objs.append(__generate_file_doxy_comment_obj(filepath))
     [
-        comment_objs.append(__generate_class_doxy_comment(i))
+        comment_objs.append(__generate_class_doxy_comment_obj(i))
         for i in hf.extract_classes(header_code)
     ]
     [
-        comment_objs.append(__generate_enum_doxy_comment(i))
+        comment_objs.append(__generate_enum_doxy_comment_obj(i))
         for i in hf.extract_enums(header_code)
     ]
     [
-        comment_objs.append(__generate_struct_doxy_comment(i))
+        comment_objs.append(__generate_struct_doxy_comment_obj(i))
         for i in hf.extract_structures(header_code)
     ]
     [
-        comment_objs.append(__generate_member_var_doxy_comment(i))
+        comment_objs.append(__generate_member_var_doxy_comment_obj(i))
         for i in hf.extract_member_vars(header_code)
     ]
     [
-        comment_objs.append(__generate_function_doxy_comment(i))
+        comment_objs.append(__generate_function_doxy_comment_obj(i))
         for i in hf.extract_functions(header_code)
     ]
 
@@ -68,7 +68,7 @@ def __insert_comment(comment, data):
         return sutil.insert(start, data, "\n" + comment["comment"])
 
 
-def __generate_file_doxy_comment(filepath):
+def __generate_file_doxy_comment_obj(filepath):
     base = os.path.basename(filepath)
     d = ""
     d += "/**\n"
@@ -76,10 +76,10 @@ def __generate_file_doxy_comment(filepath):
     d += " *\n"
     d += " * @brief @todo\n"
     d += " */\n"
-    return {"type": "file", "start": 0, "comment": d, "data": filepath}
+    return {"type": "file", "start": 0, "end": len(d), "comment": d, "data": filepath}
 
 
-def __generate_class_doxy_comment(match):
+def __generate_class_doxy_comment_obj(match):
     data = match.group()
     indent = futil.extract_indent(data)
     m = re.search(r"(class\s+)(\w+)", data)
@@ -91,10 +91,16 @@ def __generate_class_doxy_comment(match):
     d += indent + " *\n"
     d += indent + " * @todo\n"
     d += indent + " */\n"
-    return {"type": "class", "start": match.start(), "comment": d, "data": data}
+    return {
+        "type": "class",
+        "start": match.start(),
+        "end": match.end(),
+        "comment": d,
+        "data": data,
+    }
 
 
-def __generate_struct_doxy_comment(match):
+def __generate_struct_doxy_comment_obj(match):
     data = match.group()
     indent = futil.extract_indent(data)
     m = re.search(r"(struct\s+)(\w+)", data)
@@ -106,10 +112,16 @@ def __generate_struct_doxy_comment(match):
     d += indent + " *\n"
     d += indent + " * @todo\n"
     d += indent + " */\n"
-    return {"type": "struct", "start": match.start(), "comment": d, "data": data}
+    return {
+        "type": "struct",
+        "start": match.start(),
+        "end": match.end(),
+        "comment": d,
+        "data": data,
+    }
 
 
-def __generate_enum_doxy_comment(match):
+def __generate_enum_doxy_comment_obj(match):
     data = match.group()
     indent = futil.extract_indent(data)
     m = re.search(r"(enum\s+)(\w+)", data)
@@ -120,10 +132,16 @@ def __generate_enum_doxy_comment(match):
     d += indent + " *\n"
     d += indent + " * @todo\n"
     d += indent + " */\n"
-    return {"type": "enum", "start": match.start(), "comment": d, "data": data}
+    return {
+        "type": "enum",
+        "start": match.start(),
+        "end": match.end(),
+        "comment": d,
+        "data": data,
+    }
 
 
-def __generate_function_doxy_comment(match):
+def __generate_function_doxy_comment_obj(match):
     data = match.group()
     comment = ""
 
@@ -141,24 +159,31 @@ def __generate_function_doxy_comment(match):
     return {
         "type": "function",
         "start": match.start(),
+        "end": match.end(),
         "comment": comment,
         "data": data,
     }
 
 
-def __generate_member_var_doxy_comment(match):
+def __generate_member_var_doxy_comment_obj(match):
     d = ""
     data = match.group()
     indent = futil.extract_indent(data)
     d += indent + "/// @todo\n"
-    return {"type": "member_var", "start": match.start(), "comment": d, "data": data}
+    return {
+        "type": "member_var",
+        "start": match.start(),
+        "end": match.end(),
+        "comment": d,
+        "data": data,
+    }
 
 
-def __need_to_change(new_doxy_comment_obj, old_doxy_comment):
+def __need_to_change(new_doxy_comment_obj, old_doxy_comment_obj):
     new_doxy_args = futil.extract_arg_vars(new_doxy_comment_obj["data"])
     for arg in new_doxy_args:
         arg_key = "\\a " + arg
-        if arg_key not in old_doxy_comment:
+        if arg_key not in old_doxy_comment_obj["comment"]:
             return True
     return False
 

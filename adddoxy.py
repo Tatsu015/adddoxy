@@ -19,16 +19,14 @@ def main():
         description="Automatically add C++ doxygen comment headers to class, struct, enum, function and member variable."
     )
     parser.add_argument("target", help="target directory or file path")
-    parser.add_argument(
-        "--dry", help="Dry run adddoxy command", action="store_true"
-    )
+    parser.add_argument("--dry", help="Dry run adddoxy command", action="store_true")
     args = parser.parse_args()
 
     for path in file_paths(args.target):
         c = generator.add_doxy_comment(path)
         if args.dry:
             print("<<<<< " + path + " >>>>>")
-            print(c)
+            # print(c)
         else:
             f = open(path, "w")
             f.write(c)

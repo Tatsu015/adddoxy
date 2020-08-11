@@ -24,12 +24,16 @@ def to_lower_camel(s):
 
 
 def before_line(pos, data):
+    return before_line_obj(pos, data)["data"]
+
+
+def before_line_obj(pos, data):
     end = data.rfind("\n", 0, pos)
     if end == -1:
-        return ""
+        return {"start":0, "end":0, "data": ""}
 
     start = data.rfind("\n", 0, end)
     if start == -1:
-        return data[:end]
+        return {"start":0, "end":end, "data": data[:end]}
 
-    return data[start:end]
+    return {"start":start, "end":end, "data": data[start:end]}
