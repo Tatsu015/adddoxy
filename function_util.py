@@ -38,7 +38,7 @@ def is_getter(func_str):
     tmp = func_str.split("(")[0]
     if re.search(r"get\w+", tmp):
         # remove singletone getInstace function.
-        if 'getinstance' in tmp.lower():
+        if "getinstance" in tmp.lower():
             return False
         return True
     else:

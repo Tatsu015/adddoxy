@@ -11,13 +11,11 @@ def add_doxy_comment(filepath):
     f = open(filepath, "r")
     header_code = f.read()
 
-    cobjs = __generate_comment_objs(filepath, header_code)
-    for cobj in cobjs:
+    for cobj in __generate_comment_objs(filepath, header_code):
         if hf.has_doxy_comment(cobj, header_code):
-            new_doxy_args = futil.extract_arg_vars(cobj["data"])
             old_doxy_comment = hf.extract_doxy_comment(cobj, header_code)
 
-            if __need_to_change(new_doxy_args, old_doxy_comment):
+            if __need_to_change(cobj, old_doxy_comment):
                 header_code = __insert_comment(cobj, header_code)
             else:
                 continue
@@ -156,7 +154,8 @@ def __generate_member_var_doxy_comment(match):
     return {"type": "member_var", "start": match.start(), "comment": d, "data": data}
 
 
-def __need_to_change(new_doxy_args, old_doxy_comment):
+def __need_to_change(new_doxy_comment_obj, old_doxy_comment):
+    new_doxy_args = futil.extract_arg_vars(new_doxy_comment_obj["data"])
     for arg in new_doxy_args:
         arg_key = "\\a " + arg
         if arg_key not in old_doxy_comment:

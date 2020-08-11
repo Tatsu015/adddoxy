@@ -5,6 +5,7 @@ import glob
 import generator
 import argparse
 
+
 def file_paths(path):
     if os.path.isfile(path):
         return [path]
