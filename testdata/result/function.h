@@ -105,7 +105,7 @@ public:
   /**
    * @brief @todo
    *
-   * @todo \a a
+   * @todo \a a  \a b
    */
   int func(int a, int b);
 
