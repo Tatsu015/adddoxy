@@ -15,16 +15,23 @@ def file_paths(path):
 
 
 def main():
-    parse = argparse.ArgumentParser(
+    parser = argparse.ArgumentParser(
         description="Automatically add C++ doxygen comment headers to class, struct, enum, function and member variable."
     )
-    parse.add_argument("target", help="target directory or file path")
-    args = parse.parse_args()
+    parser.add_argument("target", help="target directory or file path")
+    parser.add_argument(
+        "--dry", help="Dry run adddoxy command", action="store_true"
+    )
+    args = parser.parse_args()
 
     for path in file_paths(args.target):
         c = generator.add_doxy_comment(path)
-        f = open(path, "w")
-        f.write(c)
+        if args.dry:
+            print("<<<<< " + path + " >>>>>")
+            print(c)
+        else:
+            f = open(path, "w")
+            f.write(c)
 
 
 if __name__ == "__main__":
