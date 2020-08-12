@@ -74,7 +74,7 @@ def extract_doxy_comment_obj(target, header_code):
                 "type": "file",
                 "start": 0,
                 "end": end,
-                "comment": header_code[0 : end],
+                "comment": header_code[0:end],
             }
 
     if target["type"] == "member_var":
@@ -98,6 +98,29 @@ def extract_doxy_comment_obj(target, header_code):
         }
 
     return None
+
+
+def extract_doxy_brief(target):
+    if target["type"] == "member_var":
+        buf = target["comment"].replace("///", "").strip()
+        return buf
+
+    r = re.compile(r"\s@brief.*")
+    brief = re.search(r, target["comment"])
+    if brief:
+        s = brief.group().replace("@brief", "").strip()
+        return s
+    return ""
+
+
+def extract_doxy_brief_detail(target):
+    ls = target["comment"].split("\n")
+    buf = ""
+    if len(ls) > 3:
+        for l in ls[3:-2]:
+            l = l.strip()[2:]
+            buf += l.strip() + "\\n"
+    return buf
 
 
 # print(before_line(5, 'aaaaa\nbbb'))

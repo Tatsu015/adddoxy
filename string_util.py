@@ -30,10 +30,10 @@ def before_line(pos, data):
 def before_line_obj(pos, data):
     end = data.rfind("\n", 0, pos)
     if end == -1:
-        return {"start":0, "end":0, "data": ""}
+        return {"start": 0, "end": 0, "data": ""}
 
     start = data.rfind("\n", 0, end)
     if start == -1:
-        return {"start":0, "end":end, "data": data[:end]}
+        return {"start": 0, "end": end, "data": data[:end]}
 
-    return {"start":start, "end":end, "data": data[start:end]}
+    return {"start": start, "end": end, "data": data[start:end]}

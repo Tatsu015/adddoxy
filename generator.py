@@ -11,7 +11,11 @@ def add_doxy_comment(filepath):
     f = open(filepath, "r")
     header_code = f.read()
 
-    for cobj in __generate_comment_objs(filepath, header_code):
+    # add doxygen comment from end to start, because not to change line number.
+    cobjs = __generate_comment_objs(filepath, header_code)
+    cobjs.sort(key=lambda x: x["start"], reverse=True)
+
+    for cobj in cobjs:
         if hf.has_doxy_comment(cobj, header_code):
             old_doxy_comment_obj = hf.extract_doxy_comment_obj(cobj, header_code)
 
@@ -23,6 +27,23 @@ def add_doxy_comment(filepath):
             header_code = __insert_comment(cobj, header_code)
 
     return header_code
+
+
+def export_doxy_comment(filepath):
+    f = open(filepath, "r")
+    header_code = f.read()
+
+    buf = ""
+    for cobj in __generate_comment_objs(filepath, header_code):
+        line = ""
+
+        brief = hf.extract_doxy_brief(cobj)
+        brief_detail = hf.extract_doxy_brief_detail(cobj)
+        line = filepath + "," + cobj["type"] + "," + brief + "," + brief_detail
+
+        buf += line + "\n"
+
+    return buf
 
 
 def __generate_comment_objs(filepath, header_code):
@@ -49,9 +70,6 @@ def __generate_comment_objs(filepath, header_code):
         comment_objs.append(__generate_function_doxy_comment_obj(i))
         for i in hf.extract_functions(header_code)
     ]
-
-    # add doxygen comment from end to start, because not to change line number.
-    comment_objs.sort(key=lambda x: x["start"], reverse=True)
 
     return comment_objs
 
@@ -273,6 +291,8 @@ def __generate_other_function_doxy_comment(data):
 
 
 # add_doxy_comment("testdata/function.h")
+export_doxy_comment("testdata/result/function.h")
+
 
 # # print(__to_upper_camel('aaaaa'))
 # # print(__to_upper_camel('Aaaaa'))

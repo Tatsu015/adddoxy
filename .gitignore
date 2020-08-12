@@ -3,3 +3,4 @@
 .gtgconfig
 dist/
 adddoxy.egg-info/
+result.csv
