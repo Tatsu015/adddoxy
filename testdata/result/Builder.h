@@ -19,14 +19,14 @@ class MainWindow;
 
 
 /**
- * @brief Builderは@todoのクラス。
+ * @brief Builderは@todoのクラス
  *
  * @todo
  */
 class Builder {
 private:
   /**
-   * @brief ToolBarActionは@todoの構造体。
+   * @brief ToolBarActionは@todoの構造体
    *
    * @todo
    */

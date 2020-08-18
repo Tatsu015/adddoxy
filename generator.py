@@ -105,7 +105,7 @@ def __generate_class_doxy_comment_obj(match):
 
     d = ""
     d += indent + "/**\n"
-    d += indent + " * @brief " + name + "は@todoのクラス。\n"
+    d += indent + " * @brief " + name + "は@todoのクラス\n"
     d += indent + " *\n"
     d += indent + " * @todo\n"
     d += indent + " */\n"
@@ -126,7 +126,7 @@ def __generate_struct_doxy_comment_obj(match):
 
     d = ""
     d += indent + "/**\n"
-    d += indent + " * @brief " + name + "は@todoの構造体。\n"
+    d += indent + " * @brief " + name + "は@todoの構造体\n"
     d += indent + " *\n"
     d += indent + " * @todo\n"
     d += indent + " */\n"
@@ -146,7 +146,7 @@ def __generate_enum_doxy_comment_obj(match):
     name = m.groups()[1]
     d = ""
     d += indent + "/**\n"
-    d += indent + " * @brief " + name + "は@todoを示す列挙型。\n"
+    d += indent + " * @brief " + name + "は@todoを示す列挙型\n"
     d += indent + " *\n"
     d += indent + " * @todo\n"
     d += indent + " */\n"

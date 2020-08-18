@@ -129,7 +129,7 @@ def extract_doxy_brief_detail(target):
 
 # d = '/**\n * @file function.h\n *\n * @brief @todo\n */\n#ifndef GTGFUNCTION_H'
 # c = extract_doxy_comment_obj({'start':0, 'type':'file'},d)
-# d = '/**\n * @brief Struct1は@todoの構造体。\n *\n * @todo\n */\nstruct Struct1{\n  /// @todo\n  int header_code_;\n};'
+# d = '/**\n * @brief Struct1は@todoの構造体\n *\n * @todo\n */\nstruct Struct1{\n  /// @todo\n  int header_code_;\n};'
 # c = extract_doxy_comment_obj({'start':0, 'type':'struct'},d)
 
 # d = 'private:\n  /// @todo\n  QString name_;'

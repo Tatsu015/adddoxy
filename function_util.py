@@ -56,6 +56,7 @@ def extract_arg_vars(func_str):
 
     arg_vars = []
     for arg in args:
+        arg = arg.split("=")[0]
         var = arg.split(" ")[-1]
         if var == "":
             continue

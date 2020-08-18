@@ -12,7 +12,7 @@ class Test;
 
 
 /**
- * @brief Struct1は@todoの構造体。
+ * @brief Struct1は@todoの構造体
  *
  * @todo
  */
@@ -23,14 +23,14 @@ struct Struct1{
 
 
 /**
- * @brief Functionは@todoのクラス。
+ * @brief Functionは@todoのクラス
  *
  * @todo
  */
 class Function {
 public:
   /**
-  * @brief Modifierは@todoを示す列挙型。
+  * @brief Modifierは@todoを示す列挙型
   *
   * @todo
   */
@@ -43,7 +43,7 @@ public:
 
 
   /**
-   * @brief Struct2は@todoの構造体。
+   * @brief Struct2は@todoの構造体
    *
    * @todo
    */
