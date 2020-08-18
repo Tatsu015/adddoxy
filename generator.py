@@ -291,7 +291,7 @@ def __generate_other_function_doxy_comment(data):
 
 
 # add_doxy_comment("testdata/function.h")
-export_doxy_comment("testdata/result/function.h")
+# export_doxy_comment("testdata/result/function.h")
 
 
 # # print(__to_upper_camel('aaaaa'))

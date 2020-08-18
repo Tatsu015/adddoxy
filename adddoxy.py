@@ -6,11 +6,11 @@ import generator
 import argparse
 
 
-def file_paths(path):
+def __file_paths(path):
     if os.path.isfile(path):
         return [path]
 
-    paths = glob.glob(path + "/**.h", recursive=True)
+    paths = glob.glob(path + "/**/*.h", recursive=True)
     return paths
 
 
@@ -21,18 +21,19 @@ def main():
     parser.add_argument("target", help="target directory or file path")
     parser.add_argument("--dry", help="Dry run adddoxy command", action="store_true")
     parser.add_argument(
-        "--export", help="Export doxygen comment csv list", action="store_true"
+        "--export", help="Export doxygen comment csv list", action="store_true",default=False,
     )
     args = parser.parse_args()
 
-    buf = ""
-    for path in file_paths("testdata/org"):
-        buf += generator.export_doxy_comment(path)
-    f = open("result.csv", "w")
-    f.write(buf)
-    exit(0)
+    if args.export:
+        buf = ""
+        for path in __file_paths(args.target):
+            buf += generator.export_doxy_comment(path)
+        f = open("result.csv", "w")
+        f.write(buf)
+        exit(0)
 
-    for path in file_paths(args.target):
+    for path in __file_paths(args.target):
         if args.export:
             generator.export_doxy_comment(path)
             continue
